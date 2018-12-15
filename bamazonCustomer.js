@@ -3,6 +3,14 @@ var inquirer = require("inquirer");
 var Tablefy = require("tablefy")
 var table = new Tablefy();
 
+var noStock = [
+    'background: red',
+    'color: white',
+    'display: block',
+    'text-align: center'
+].join(';');
+
+
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -13,6 +21,8 @@ var connection = mysql.createConnection({
 
 connection.connect(function(error){
     if (error) throw error;
+
+    console.log(`\nWelcome to Bamazon, take a look around.\n`)
     showInventory()
     
 });
@@ -56,13 +66,13 @@ function questions() {
         // console.log(data[0].item_id)
 
         if(answer.unitSelection > data[0].stock_quantity){
-            console.log("We do not have that many in stock, please try again.\n\n")
+            console.log(`\nWe only have ${data[0].stock_quantity} in stock, please try again.\n`)
             table = new Tablefy();
             showInventory()
         } else {
             // console.log("You can buy this!")
-            connection.query("UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?", [answer.unitSelection, data[0].item_id])
-            console.log("\nThank your for your order. Your total is " + (answer.unitSelection * data[0].price) + ".\n")
+            connection.query("UPDATE products SET stock_quantity = stock_quantity - ?, product_sales = product_sales + (price * ?) WHERE item_id = ?", [answer.unitSelection, answer.unitSelection, data[0].item_id])
+            console.log("\nThank your for your order. Your total is $" + (answer.unitSelection * data[0].price) + ".\n")
 
             inquirer.prompt({
                 type: "confirm",
@@ -93,7 +103,7 @@ function showInventory() {
     connection.query("SELECT item_id, product_name, price FROM products", function(error, data){
         if (error) throw error;
 
-        console.log(`\nWelcome to Bamazon, take a look around.\n`)
+        // console.log(`\nWelcome to Bamazon, take a look around.\n`)
        
         table.draw(data);
 
@@ -102,6 +112,7 @@ function showInventory() {
         //     console.log (`Item ID: ${data[i].item_id}    Description: ${data[i].product_name}    Price: ${data[i].price}`)
             
         // }
+        console.log("\n\n")
         questions()
     })
 };

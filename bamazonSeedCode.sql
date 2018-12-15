@@ -7,4 +7,5 @@ VALUE ("sewing machine", "machines", 399.99, 8), ("scissors", "tools", 15.99, 25
 ("cotton fabric - 5yd bundle", "supplies", 24.99, 20), ("silk fabric - 3yd bundle", "supplies", 59.95, 15),
 ("polyester thread", "supplies", 5.99, 75), ("zipper", "supplies", 3.89, 36);
 
-87
+INSERT INTO departments (department_name, over_head_costs)
+VALUE ("machines", 530.00), ("tools", 257.00), ("notions", 75.00), ("supplies", 325.00);
