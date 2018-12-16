@@ -47,7 +47,7 @@ function menu() {
 };
 
 function displayTable() {
-    connection.query("SELECT department_id, departments.department_name, over_head_costs, product_sales, product_sales - over_head_costs AS total_profit FROM departments LEFT JOIN products ON departments.department_name = products.department_name ORDER BY department_name;", function(error, data){
+    connection.query("SELECT department_id, departments.department_name, over_head_costs, SUM(IFNULL(product_sales,0)) AS product_sales, SUM(IFNULL(product_sales,0)) - over_head_costs AS total_profit  FROM departments LEFT JOIN products ON departments.department_name = products.department_name GROUP BY department_name;", function(error, data){
 
         if (error) throw error;
 
@@ -58,8 +58,6 @@ function displayTable() {
 
         menu();
     });
-
-
 };
 
 function newDepartment() {

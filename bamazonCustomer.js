@@ -3,13 +3,6 @@ var inquirer = require("inquirer");
 var Tablefy = require("tablefy")
 var table = new Tablefy();
 
-var noStock = [
-    'background: red',
-    'color: white',
-    'display: block',
-    'text-align: center'
-].join(';');
-
 
 var connection = mysql.createConnection({
     host: "localhost",

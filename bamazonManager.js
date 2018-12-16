@@ -59,7 +59,7 @@ function menu() {
 
 
 function showAllInventory() {
-    connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function (error, data) {
+    connection.query("SELECT item_id, product_name, price, stock_quantity, product_sales FROM products", function (error, data) {
         if (error) throw error;
 
         console.log(`\nHere are the current products for sale.\n`)
@@ -162,7 +162,8 @@ function addNewProduct() {
             product_name: answer.name,
             department_name: answer.dept,
             price: answer.price,
-            stock_quantity: answer.stock
+            stock_quantity: answer.stock,
+            product_sales: 0
         },
         function(error){
             if(error) throw error;
